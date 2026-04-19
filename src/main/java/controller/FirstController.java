@@ -1,5 +1,7 @@
 package controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -36,6 +38,17 @@ public class FirstController {
     @PostMapping("/methodWithListHeader")
     public String methodWithListHeader(@RequestHeader Map<String, String> headers) {
         return "The username from list header is " + headers.entrySet();
+    }
+
+    @GetMapping("/methodResponseEntity/{id}")
+    public ResponseEntity<Object> methodResponseEntity(@PathVariable Long id) {
+        var user = new User("marcusvynicius");
+
+        if(id > 5) {
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        }
+
+        return ResponseEntity.badRequest().body("Number smaller than 5");
     }
 
     record User(String name){}
